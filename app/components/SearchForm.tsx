@@ -21,7 +21,7 @@ const SearchForm = ({ query }: { query?: string }) => {
           type="submit"
           className="size-[50px] rounded-full bg-black flex justify-center items-center !important text-white"
         >
-          S
+          Search
         </button>
       </div>
     </Form>
