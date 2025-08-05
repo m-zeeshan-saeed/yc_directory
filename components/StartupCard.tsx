@@ -1,5 +1,6 @@
 import { formatDate } from "@/lib/utils";
 import { EyeIcon, Link } from "lucide-react";
+import Image from "next/image";
 
 const StartupCard = ({ post }: { post: StartupCardType }) => {
   const {
@@ -35,6 +36,15 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
             </h3>
           </Link>
         </div>
+        <Link href={`/user/${authorId}`}>
+          <Image
+            src={"https://placeholder.co/48*48"}
+            alt="placeholder"
+            width={48}
+            height={48}
+            className="rounded-full"
+          />
+        </Link>
       </div>
     </li>
   );
