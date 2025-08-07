@@ -1,6 +1,5 @@
 import SearchForm from "../../components/SearchForm";
 import StartupCard from "../../components/StartupCard";
-
 export default async function Home({
   searchParams,
 }: {
@@ -14,8 +13,10 @@ export default async function Home({
       author: { _id: 1, name: "John Doe" },
       _id: 1,
       description: "this is the description.",
-      image: "",
+      image:
+        "https://www.freepik.com/free-photo/diverse-people-standing-beside-tablet-with-www-icon_3687009.htm#fromView=search&page=1&position=0&uuid=46f9a811-9937-4b7f-866c-6bb4213e8730&query=cdn+link+photos",
       title: "Simple Startup",
+      category: "Technology",
     },
   ];
   return (
