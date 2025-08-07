@@ -1,6 +1,7 @@
 import { formatDate } from "@/lib/utils";
-import { EyeIcon, Link } from "lucide-react";
+import { EyeIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link"; // ✅ Use Next.js Link
 
 const StartupCard = ({ post }: { post: StartupCardType }) => {
   const {
@@ -12,6 +13,7 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
     _id,
     image,
   } = post;
+
   return (
     <li className="bg-white border-[5px] border-black py-6 px-5 rounded-[22px] shadow-xl shadow-pink-200 hover:border-pink-500 transition-all duration-500 hover:shadow-pink-500 hover:bg-pink-100 group">
       <div className="flex justify-between items-center">
@@ -38,7 +40,7 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
         </div>
         <Link href={`/user/${authorId}`}>
           <Image
-            src={"https://placeholder.co/48*48"}
+            src="https://via.placeholder.com/48" // ✅ Fixed image URL
             alt="placeholder"
             width={48}
             height={48}

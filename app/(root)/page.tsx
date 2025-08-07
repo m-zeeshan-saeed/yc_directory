@@ -1,4 +1,3 @@
-"use client";
 import SearchForm from "../../components/SearchForm";
 import StartupCard from "../../components/StartupCard";
 
@@ -16,13 +15,13 @@ export default async function Home({
       _id: 1,
       description: "this is the description.",
       image: "",
-      title: "Sample Startup",
+      title: "Simple Startup",
     },
   ];
   return (
     <>
       <section className=" w-full bg-pink-400 min-h-[530px] pattern flex justify-center items-center flex-col py-10 px-6">
-        <h1 className="heading">
+        <h1 className="uppercase bg-black px-6 py-3 font-work-sans font-extrabold text-white sm:text-[54px] sm:leading-[64px] text-[36px] leading-[46px] max-w-5xl text-center my-5">
           Pitch Your startup, <br />
           Connect With Entrepreneurs
         </h1>
@@ -32,7 +31,7 @@ export default async function Home({
         </p>
         <SearchForm query={query} />
       </section>
-      <section className="py-6 py10 max-w-7xl mx-auto">
+      <section className="px-6 py-10 max-w-7xl mx-auto">
         <p className="font-semibold text-[30px] text-black-100">
           {query ? `search results for: "${query}"` : "All startups"}
         </p>
