@@ -1,24 +1,16 @@
 import SearchForm from "../../components/SearchForm";
-import StartupCard from "../../components/StartupCard";
+import StartupCard, { StartupTypeCard } from "../../components/StartupCard";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
+import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 export default async function Home({
   searchParams,
 }: {
   searchParams: Promise<{ query?: string }>;
 }) {
   const query = (await searchParams).query;
-  const posts = [
-    {
-      _createdAT: new Date(),
-      views: 55,
-      author: { _id: 1, name: "John Doe" },
-      _id: 1,
-      description: "this is the description.",
-      image:
-        "https://www.freepik.com/free-photo/diverse-people-standing-beside-tablet-with-www-icon_3687009.htm#fromView=search&page=1&position=0&uuid=46f9a811-9937-4b7f-866c-6bb4213e8730&query=cdn+link+photos",
-      title: "Simple Startup",
-      category: "Technology",
-    },
-  ];
+  const params = { search: query || null };
+  const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY, params }); // live Fetch all startups
+
   return (
     <>
       <section className=" w-full bg-pink-400 min-h-[530px] pattern flex justify-center items-center flex-col py-10 px-6">
@@ -38,7 +30,7 @@ export default async function Home({
         </p>
         <ul className="mt-7 grid md:grid-cols-3 sm:grid-cols-2 gap-5">
           {posts?.length > 0 ? (
-            posts.map((post: StartupCardType) => (
+            posts.map((post: StartupTypeCard) => (
               <StartupCard key={post?._id} post={post} />
             ))
           ) : (
@@ -48,6 +40,7 @@ export default async function Home({
           )}
         </ul>
       </section>
+      <SanityLive />
     </>
   );
 }
