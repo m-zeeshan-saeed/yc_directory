@@ -29,6 +29,7 @@ export const STARTUP_BY_ID_QUERY =
       name,
       image,
       bio,
+      username,
     } ,
     views,
     description,
@@ -36,3 +37,5 @@ export const STARTUP_BY_ID_QUERY =
     category,
     pitch,
   }`);
+
+export const STARTUP_VIEWS_QUERY = defineQuery(``);

@@ -2,15 +2,20 @@ import { formatDate } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
 import { STARTUP_BY_ID_QUERY } from "@/sanity/lib/queries";
 import { notFound } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import markdown from "markdown-it";
+import { Skeleton } from "@/components/ui/skeleton";
+import Seen from "@/components/Seen";
+const md = markdown();
 
 export const experimental_ppr = true;
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const id = (await params).id;
   const post = await client.fetch(STARTUP_BY_ID_QUERY, { id });
   if (!post) return notFound();
+  const parsedContent = md.render(post?.pitch || "");
   return (
     <>
       <section className="w-full bg-[#EE2B69] min-h-[530px] pattern flex justify-center items-center flex-col py-10 px-6 ">
@@ -49,13 +54,34 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
                 <p className="font-medium text-[20px] text-black">
                   {post.author.name}
                 </p>
-                <p className="font-medium text-[16px] text-black-300">
+                <p className="font-medium text-[16px] text-gray-400">
                   @{post.author.username}
                 </p>
               </div>
             </Link>
+            <p className="font-medium text-[16px] bg-[#FFE8F0] px-4 py-2 rounded-full">
+              {post.category}
+            </p>
           </div>
+          <h3 className="text-[30px] font-bold text-black"></h3>
+          {parsedContent ? (
+            <article
+              className="prose max-w-4xl font-sans break-all"
+              dangerouslySetInnerHTML={{ __html: parsedContent }}
+            />
+          ) : (
+            <p className="no-result">No Details Provided</p>
+          )}
         </div>
+        <hr className="border-dotted bg-zinc-400 max-w-4xl my-10 mx-auto" />
+        {/* TODO: EDITOR SELECTED STARTUPS */}
+        <Suspense
+          fallback={
+            <Skeleton className="bg-zinc-400 h-10 w-24 rounded-lg fixed bottom-3 right-3" />
+          }
+        >
+          <Seen id={id} />
+        </Suspense>
       </section>
     </>
   );
