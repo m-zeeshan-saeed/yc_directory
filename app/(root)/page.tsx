@@ -2,6 +2,7 @@ import SearchForm from "../../components/SearchForm";
 import StartupCard, { StartupTypeCard } from "../../components/StartupCard";
 import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
+import { auth } from "@/auth";
 export default async function Home({
   searchParams,
 }: {
@@ -9,11 +10,15 @@ export default async function Home({
 }) {
   const query = (await searchParams).query;
   const params = { search: query || null };
+
+  const session = await auth();
+  console.log(session?.id);
+
   const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY, params }); // live Fetch all startups
 
   return (
     <>
-      <section className=" w-full bg-pink-400 min-h-[530px] pattern flex justify-center items-center flex-col py-10 px-6">
+      <section className=" w-full bg-[#EE2B69] min-h-[530px] pattern flex justify-center items-center flex-col py-10 px-6">
         <h1 className="uppercase bg-black px-6 py-3 font-work-sans font-extrabold text-white sm:text-[54px] sm:leading-[64px] text-[36px] leading-[46px] max-w-5xl text-center my-5">
           Pitch Your startup, <br />
           Connect With Entrepreneurs
