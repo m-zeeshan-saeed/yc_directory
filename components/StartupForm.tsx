@@ -8,10 +8,15 @@ import { Button } from "./ui/button";
 import { Send } from "lucide-react";
 import { formSchema } from "@/lib/validation";
 import { z } from "zod";
+import toast from "react-hot-toast";
+// import { useRouter } from "next/navigation";
 
 const StartupForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [pitch, setPitch] = useState("");
+
+  // const router = useRouter();
+
   const handleFormSubmit = async (prevState: any, formData: formData) => {
     try {
       const formValues = {
@@ -23,13 +28,20 @@ const StartupForm = () => {
       };
       await formSchema.parseAsync(formValues);
       console.log(formValues);
-      //   const result = await createIdea(prevState, formData, pitch);
+      // const result = await createIdea(prevState, formData, pitch);
+      // if (result.status == "SUCCESS") {
+      //   toast.success("Your startup pitch has been created successfully");
+      //   router.push(`/startup/${result.id}`);
+      // }
+      // return result;
     } catch (error) {
       if (error instanceof z.ZodError) {
         const fieldErrors = error.flatten().fieldErrors;
         setErrors(fieldErrors as unknown as Record<string, string>);
+        toast.error("Please check your inputs and try again");
         return { ...prevState, error: "Validation failed", status: "ERROR" };
       }
+      toast.error("An unexpected error has occurred");
       return {
         ...prevState,
         error: "An unexpected error has occurred",
