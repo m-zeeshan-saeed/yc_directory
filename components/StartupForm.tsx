@@ -9,15 +9,22 @@ import { Send } from "lucide-react";
 import { formSchema } from "@/lib/validation";
 import { z } from "zod";
 import toast from "react-hot-toast";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { createPitch } from "@/lib/actions";
 
 const StartupForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [pitch, setPitch] = useState("");
 
-  // const router = useRouter();
+  const router = useRouter();
+  type FormState = {
+    error: string;
+    status: "INITIAL" | "SUCCESS" | "ERROR";
+    id?: string;
+    link: unknown;
+  };
 
-  const handleFormSubmit = async (prevState: any, formData: formData) => {
+  const handleFormSubmit = async (prevState: FormState, formData: FormData) => {
     try {
       const formValues = {
         title: formData.get("title") as string,
@@ -27,13 +34,13 @@ const StartupForm = () => {
         pitch,
       };
       await formSchema.parseAsync(formValues);
-      console.log(formValues);
-      // const result = await createIdea(prevState, formData, pitch);
-      // if (result.status == "SUCCESS") {
-      //   toast.success("Your startup pitch has been created successfully");
-      //   router.push(`/startup/${result.id}`);
-      // }
-      // return result;
+
+      const result = await createPitch(prevState, formData, pitch);
+      if (result.status == "SUCCESS") {
+        toast.success("Your startup pitch has been created successfully");
+        router.push(`/startup/${result._id}`);
+      }
+      return result;
     } catch (error) {
       if (error instanceof z.ZodError) {
         const fieldErrors = error.flatten().fieldErrors;
