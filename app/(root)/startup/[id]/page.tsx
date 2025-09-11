@@ -8,12 +8,22 @@ import Link from "next/link";
 import markdown from "markdown-it";
 import { Skeleton } from "@/components/ui/skeleton";
 import Seen from "@/components/Seen";
+import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
 const md = markdown();
+import { PLAYLIST_BY_SLUG_QUERY } from "@/sanity/lib/queries";
 
 export const experimental_ppr = true;
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const id = (await params).id;
-  const post = await client.fetch(STARTUP_BY_ID_QUERY, { id });
+  const [post, playlist] = await Promise.all([
+    client.fetch(STARTUP_BY_ID_QUERY, { id }),
+    client.fetch(PLAYLIST_BY_SLUG_QUERY, {
+      slug: "zs-computer",
+    }),
+  ]);
+
+  const editorPosts = playlist?.select ?? [];
+  console.log("Playlist query result:", playlist);
   if (!post) return notFound();
   const parsedContent = md.render(post?.pitch || "");
   return (
@@ -74,7 +84,16 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
           )}
         </div>
         <hr className="border-dotted bg-zinc-400 max-w-4xl my-10 mx-auto" />
-        {/* TODO: EDITOR SELECTED STARTUPS */}
+        {editorPosts?.length > 0 && (
+          <div className="max-w-4xl mx-auto">
+            <p className="font-semibold text-[30px] text-black">Editor Picks</p>
+            <ul className="mt-7 grid sm:grid-cols-2 gap-5">
+              {editorPosts.map((post: StartupTypeCard, i: number) => (
+                <StartupCard key={i} post={post} />
+              ))}
+            </ul>
+          </div>
+        )}
         <Suspense
           fallback={
             <Skeleton className="bg-zinc-400 h-10 w-24 rounded-lg fixed bottom-3 right-3" />

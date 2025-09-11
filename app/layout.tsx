@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
+import ToasterProvider from "@/app/ToasterProvider";
 
 export const metadata: Metadata = {
   title: "YC Directory",
@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         {children}
-        <Toaster />
+        <ToasterProvider />
       </body>
     </html>
   );
